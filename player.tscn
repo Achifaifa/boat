@@ -18,3 +18,4 @@ shape = SubResource( 1 )
 [node name="Camera" type="Camera" parent="player"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0 )
 current = true
+far = 2000.0
