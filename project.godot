@@ -30,6 +30,10 @@ config/name="boat"
 run/main_scene="res://island.tscn"
 config/icon="res://icon.png"
 
+[debug]
+
+gdscript/warnings/unused_variable=false
+
 [editor_plugins]
 
 enabled=PoolStringArray( "zylann.hterrain" )

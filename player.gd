@@ -11,12 +11,14 @@ var looksens : float = 10.0
 var vel : Vector3 = Vector3()
 var mousedelta : Vector2 = Vector2()
 
-onready var camera : Camera = get_node("Camera")
+onready var camera = get_node("Camera")
+onready var r = $"Camera/RayCast"
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _physics_process(delta):
+	
 	vel.x=0
 	vel.z=0
 	
@@ -59,4 +61,10 @@ func _input(event):
 	
 	if event is InputEventMouseMotion:
 		mousedelta=event.relative
-		
+	
+	if Input.is_action_pressed("interact"):
+		if r.is_colliding():
+			if r.get_collider().is_in_group("interactions"):
+				print('interacted')
+
+
