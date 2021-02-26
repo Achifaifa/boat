@@ -1,18 +1,21 @@
 extends KinematicBody
 
-var movespeed : float = 5.0
-var gravity : float = 9.8
-var jumpforce : float = 4.5
+var movespeed = 5.0
+var gravity = 9.8
+var jumpforce = 4.5
 
-var minlookangle : float = -80.0
-var maxlookangle : float = 80.0
-var looksens : float = 10.0
+var minlookangle = -80.0
+var maxlookangle = 80.0
+var looksens = 10.0
 
-var vel : Vector3 = Vector3()
-var mousedelta : Vector2 = Vector2()
+var vel = Vector3()
+var mousedelta = Vector2()
 
-onready var camera = get_node("Camera")
+onready var camera = $"Camera"
 onready var r = $"Camera/RayCast"
+
+var holdsec=0
+var interacted=0
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -56,15 +59,29 @@ func _process(delta):
 	rotation_degrees.y -= mousedelta.x*looksens*delta
 	
 	mousedelta=Vector2()
+	
+	if Input.is_action_pressed("interact"):
+		var col=r.get_collider()
+		if r.is_colliding() and col.is_in_group("interactions") and interacted==0:
+			if holdsec>=1:
+				get_tree().call_group("gui-signals","alter_pbar",0)
+				col.interact()
+				holdsec=0
+				interacted=1
+			else:
+				holdsec+=delta
+				get_tree().call_group("gui-signals","alter_pbar",holdsec)
+				
+	else:
+		get_tree().call_group("gui-signals","alter_pbar",0)
+		holdsec=0
+		interacted=0
 
 func _input(event):
 	
 	if event is InputEventMouseMotion:
 		mousedelta=event.relative
 	
-	if Input.is_action_pressed("interact"):
-		if r.is_colliding():
-			if r.get_collider().is_in_group("interactions"):
-				print('interacted')
+	
 
 

@@ -1,6 +1,13 @@
 extends StaticBody
 
-#func _input_event(camera, event, click_position, click_normal, shape_idx):
-#	var mouse_click = event as InputEventMouseButton
-#	if mouse_click and mouse_click.button_index == 1 and mouse_click.pressed:
-#		print("clicked")
+var activated=0
+
+func _ready():
+	randomize()
+
+func interact():
+	activated^=1
+	
+func _physics_process(delta):
+	if activated:
+		translate(Vector3(randf()-0.5,randf()-0.5,randf()-0.5))
